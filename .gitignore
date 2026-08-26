@@ -32,9 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 /.env
-/.cursor/
-/.idea/
-/.mvn/
-/.qodo/
-/.claude/
 .DS_Store
