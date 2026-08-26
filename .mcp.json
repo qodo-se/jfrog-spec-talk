@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "jfrog": {
+      "type": "http",
+      "url": "https://trialiqsxt4.jfrog.io/mcp"
+    }
+  }
+}

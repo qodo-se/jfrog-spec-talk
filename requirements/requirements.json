@@ -1,0 +1,28 @@
+{
+  "project": "JFrog Spec Talk — Contacts API",
+  "description": "The SDD spec for this talk: the versioned source of truth agents implement from. REQ-001 is the finished Contacts CRUD baseline. REQ-002 (CSV export) is drafted live with JFrog MCP as the package gate, then turned into Gherkin and JUnit before any new library hits the POM.",
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "title": "Contacts can be created, read, listed, replaced and deleted",
+      "status": "implemented",
+      "story": "As an operator of the contacts service, I want to create, read, list, replace and delete contacts so that the address book stays accurate without rebuilding the API during the talk.",
+      "acceptanceCriteria": [
+        "Given the contacts API is running, when I create a contact with a unique email, then the response status is 201 and the body includes that email",
+        "Given a stored contact, when I fetch it by id, then the response status is 200 and the body includes that contact's email",
+        "Given seeded contacts exist, when I list contacts, then the response status is 200 and the list is not empty"
+      ],
+      "featureFile": "src/test/resources/features/contacts.feature"
+    },
+    {
+      "id": "REQ-002",
+      "title": "Export contacts as CSV",
+      "status": "pending",
+      "story": "PLACEHOLDER — draft the user story, Given/When/Then criteria, and JFrog-approved Maven coordinates during Exercise 1. Do not implement yet.",
+      "acceptanceCriteria": [],
+      "featureFile": "src/test/resources/features/contacts.feature",
+      "chosenPackage": null,
+      "chosenVersion": null
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/Users/davidparry/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.10/byte-buddy-agent-1.18.10.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+
+@REQ-001
+Scenario: A new contact can be created                                           # features/contacts.feature:14
+  Given the contacts API is running                                              # com.davidparry.jfrog.jfrogspectalk.contact.ContactSteps.theContactsApiIsRunning()
+  When I create a contact named "Talk" "User" with email "talk.user@example.com" # com.davidparry.jfrog.jfrogspectalk.contact.ContactSteps.iCreateAContact(java.lang.String,java.lang.String,java.lang.String)
+  Then the response status is 201                                                # com.davidparry.jfrog.jfrogspectalk.contact.ContactSteps.theResponseStatusIs(int)
+  And the contact email is "talk.user@example.com"                               # com.davidparry.jfrog.jfrogspectalk.contact.ContactSteps.theContactEmailIs(java.lang.String)
+
+@REQ-001
+Scenario: A contact can be fetched by id                                          # features/contacts.feature:21
+  Given a stored contact named "Talk" "Fetch" with email "talk.fetch@example.com" # com.davidparry.jfrog.jfrogspectalk.contact.ContactSteps.aStoredContact(java.lang.String,java.lang.String,java.lang.String)
+  When I fetch that contact by id                                                 # com.davidparry.jfrog.jfrogspectalk.contact.ContactSteps.iFetchThatContactById()
+  Then the response status is 200                                                 # com.davidparry.jfrog.jfrogspectalk.contact.ContactSteps.theResponseStatusIs(int)
+  And the contact email is "talk.fetch@example.com"                               # com.davidparry.jfrog.jfrogspectalk.contact.ContactSteps.theContactEmailIs(java.lang.String)
+
+@REQ-001
+Scenario: Contacts can be listed    # features/contacts.feature:28
+  Given the contacts API is running # com.davidparry.jfrog.jfrogspectalk.contact.ContactSteps.theContactsApiIsRunning()
+  When I list contacts              # com.davidparry.jfrog.jfrogspectalk.contact.ContactSteps.iListContacts()
+  Then the response status is 200   # com.davidparry.jfrog.jfrogspectalk.contact.ContactSteps.theResponseStatusIs(int)
+  And the contact list is not empty # com.davidparry.jfrog.jfrogspectalk.contact.ContactSteps.theContactListIsNotEmpty()
