@@ -1,4 +1,4 @@
-# JFrog Spec Talk — Contacts API
+# Contacts API
 
 > **Students: start here → [`student-follow-along.md`](student-follow-along.md)**
 > Your step-by-step companion for the hour — the exact commands, the exact
