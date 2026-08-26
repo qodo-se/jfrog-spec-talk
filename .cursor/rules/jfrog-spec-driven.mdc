@@ -1,0 +1,26 @@
+---
+description: Use JFrog MCP during spec-driven design before any new Maven dependency
+alwaysApply: true
+---
+
+# JFrog MCP during spec-driven design
+
+[`requirements/requirements.json`](requirements/requirements.json) is the source of truth. Do not write Gherkin, tests, or production code until the human approves the spec.
+
+Before recommending or adding a Maven dependency:
+
+1. Call JFrog MCP `catalog_packages_get` (and `catalog_packages_list_versions` if needed).
+2. Call `catalog_packages_versions_vulnerabilities` for the candidate version.
+3. Call `jfs_curation_check_remote_package_compliance` with `package_type` `maven`. Use `remote_source_url` `""` unless a curated Artifactory remote is in play.
+4. Call `xray_artifact_get_summary` only when an Artifactory path already exists.
+
+Do not add a library that is curation-blocked or has Critical vulnerabilities. Record the chosen coordinates on the requirement as `chosenPackage` (`groupId:artifactId`) and `chosenVersion` when pinned.
+
+Example after a clean check:
+
+```json
+"chosenPackage": "org.apache.commons:commons-csv",
+"chosenVersion": "1.14.1"
+```
+
+Then `./mvnw test` — not a copied TDD MCP server. The JFrog MCP URL is OAuth-only; never put API keys or identity tokens in `mcp.json`.
