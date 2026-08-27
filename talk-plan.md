@@ -66,3 +66,7 @@ The hour on stage stops at GREEN (Exercise 2 in the follow-along). Qodo
 review, merge, Artifactory, Xray, SBOM, Evidence, and the release bundle
 are the rest of the platform story — narrative after the PR, not a live
 lab step.
+
+**Laptop / JPD prep (not a student paste):** Catalog and Curation MCP
+tools need Unified or Ultimate Security. Steps:
+[student-follow-docs/enable-catalog-curation.md](student-follow-docs/enable-catalog-curation.md).

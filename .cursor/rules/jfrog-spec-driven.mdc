@@ -7,20 +7,21 @@ alwaysApply: true
 
 [`requirements/requirements.json`](requirements/requirements.json) is the source of truth. Do not write Gherkin, tests, or production code until the human approves the spec.
 
-Before recommending or adding a Maven dependency:
+Before recommending or adding a Maven dependency, call JFrog MCP tools that this JPD actually advertises:
 
-1. Call JFrog MCP `catalog_packages_get` (and `catalog_packages_list_versions` if needed).
-2. Call `catalog_packages_versions_vulnerabilities` for the candidate version.
-3. Call `jfs_curation_check_remote_package_compliance` with `package_type` `maven`. Use `remote_source_url` `""` unless a curated Artifactory remote is in play.
-4. Call `xray_artifact_get_summary` only when an Artifactory path already exists.
+1. `artifactory_packages_get_versions` with `package_type` `maven` and `package_name` `groupId:artifactId` (for example `org.apache.commons:commons-csv`).
+2. If versions exist, optionally `artifactory_packages_get_version_repositories` and `artifactory_packages_get_install_instructions`.
+3. `xray_artifact_get_summary` only when an Artifactory path already exists (path or checksum). Skip it when the library is not in this JPD yet.
 
-Do not add a library that is curation-blocked or has Critical vulnerabilities. Record the chosen coordinates on the requirement as `chosenPackage` (`groupId:artifactId`) and `chosenVersion` when pinned.
+Zero Artifactory versions for a brand-new OSS jar is expected — that tool lists packages **already stored** in this Artifactory, not Maven Central. Do not invent Catalog or Curation tool names if they are missing from the server.
 
-Example after a clean check:
+For this talk, if Artifactory has no versions, still pin:
 
 ```json
 "chosenPackage": "org.apache.commons:commons-csv",
 "chosenVersion": "1.14.1"
 ```
+
+Record those coordinates on the requirement as `chosenPackage` (`groupId:artifactId`) and `chosenVersion` when pinned.
 
 Then `./mvnw test` — not a copied TDD MCP server. The JFrog MCP URL is OAuth-only; never put API keys or identity tokens in `mcp.json`.

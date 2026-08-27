@@ -7,9 +7,8 @@ what you should see at every step.
 **The big idea:** the Contacts API in this repo is *finished
 infrastructure* — you use it, you don't rebuild CRUD. Your hour is
 spec-driven design with JFrog MCP in the loop: draft a requirement *with*
-an agent, check candidate libraries against catalog, curation, and
-vulnerabilities *before* they hit the POM, then drive it
-spec → Gherkin → RED → GREEN.
+an agent, use JFrog MCP before any new Maven library hits the POM, then
+drive it spec → Gherkin → RED → GREEN.
 
 JFrog SaaS MCP is OAuth-only. Do not put API keys or identity tokens in
 `mcp.json`. Those belong to Artifactory REST and the JFrog CLI, not this
@@ -109,15 +108,11 @@ Paste this into Cursor's agent, word for word:
 > contacts as CSV. Follow the existing format — unique id, title, user
 > story, acceptance criteria phrased Given/When/Then, status pending,
 > featureFile pointing at src/test/resources/features/contacts.feature.
-> Before choosing a Maven library, use the JFrog MCP tools:
-> catalog_packages_get, catalog_packages_versions_vulnerabilities, and
-> jfs_curation_check_remote_package_compliance (package_type maven;
-> remote_source_url empty string unless a curated Artifactory remote is in
-> play). Do not add a library that is blocked or has Critical
-> vulnerabilities. Record the chosen coordinates as chosenPackage
-> (groupId:artifactId) and chosenVersion if you pin one. Do not write
-> scenarios or production code yet — we are only agreeing on the spec and
-> the library.
+> Before choosing a Maven library, use JFrog MCP. Record the chosen
+> coordinates as chosenPackage (groupId:artifactId) and chosenVersion if
+> you pin one. For this hour use org.apache.commons:commons-csv and pin
+> 1.14.1 unless I redirect you. Do not write scenarios or production
+> code yet — we are only agreeing on the spec and the library.
 
 **What you should see, in order:**
 
@@ -125,17 +120,13 @@ Paste this into Cursor's agent, word for word:
    `requirements/requirements.json` (story + Given/When/Then criteria).
    Read what it wrote — requirements gathering didn't disappear, it moved
    to review.
-2. JFrog MCP calls: catalog → vulnerabilities → curation. The agent
-   names a Maven CSV library and fills `chosenPackage` (for example
-   `org.apache.commons:commons-csv`).
+2. The agent calls **JFrog MCP** (the project rule picks the tools), then
+   fills `chosenPackage` / `chosenVersion` — for this hour
+   `org.apache.commons:commons-csv` and `1.14.1` unless you redirect.
 3. **Your checkpoint:** read the story, the criteria, *and* the chosen
    coordinates aloud. Is this the export we meant, and is this library
    one we would actually ship? You own the intent — approve it or
    redirect the agent with one sentence.
-
-**Want to see the JFrog gate fire?** Ask the agent to consider a package
-version with a known Critical CVE and re-run curation/vuln checks — it
-should refuse to record that version as `chosenPackage`.
 
 ---
 
@@ -147,7 +138,7 @@ Paste this into Cursor's agent, word for word:
 > to src/test/resources/features/contacts.feature for its acceptance
 > criteria, reuse or add step definitions, add a matching JUnit test in
 > ContactApiTest, run ./mvnw test to show RED, then add only the
-> JFrog-approved dependency from chosenPackage to pom.xml and implement
+> dependency recorded as chosenPackage to pom.xml and implement
 > the simplest code to reach GREEN, then mark REQ-002 implemented in
 > requirements/requirements.json. Ask me before each phase change.
 
@@ -225,8 +216,8 @@ git checkout - && git branch -D talk && git checkout -b talk
 - **Cursor MCP connection red:** toggle `jfrog` off/on in Settings → MCP
   after completing OAuth. Confirm the URL is
   `https://trialiqsxt4.jfrog.io/mcp` with no Authorization header.
-- **Agent adds a library without calling JFrog:** stop it. The project
-  rule is: no new Maven dependency until catalog, vulnerabilities, and
-  curation have been checked. Re-paste Exercise 1.
+- **Agent adds a library without calling JFrog MCP:** stop it. The
+  project rule is: no new Maven dependency until JFrog MCP has been
+  called. Re-paste Exercise 1.
 - **Agent goes sideways:** it happens. Undo its edits, clear the chat, and
   re-paste the prompt — or follow the presenter's fallback on screen.

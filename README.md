@@ -6,11 +6,10 @@
 
 A hands-on talk. The Contacts CRUD API in this repo is **finished
 infrastructure — you use it, you don't rebuild it**. What you drive is
-**spec-driven development with JFrog MCP as the package gate**: you and an
-AI agent draft a CSV-export requirement together, check candidate Maven
-libraries against catalog, curation, and vulnerabilities *before* they
-hit the POM, then turn the spec into Gherkin and JUnit and walk
-Red → Green.
+**spec-driven development with JFrog MCP in the loop**: you and an
+AI agent draft a CSV-export requirement together, use JFrog MCP *before*
+any new library hits the POM, then turn the spec into Gherkin and JUnit
+and walk Red → Green.
 
 **Attending?** Follow [`student-follow-along.md`](student-follow-along.md).
 
@@ -27,8 +26,7 @@ Artifactory, Xray, Evidence, and release bundles) is in
 | **TDD** (test-driven) | one unit | failing unit test | `ContactApiTest`, JUnit 5 |
 
 JFrog MCP sits **inside spec design**, not after the code exists: no new
-dependency until the agent has called catalog, vulnerabilities, and
-curation.
+dependency until the agent has called JFrog MCP.
 
 ## What's in the box
 
