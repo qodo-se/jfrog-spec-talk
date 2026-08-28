@@ -120,7 +120,9 @@ Paste this into Cursor's agent, word for word:
    `requirements/requirements.json` (story + Given/When/Then criteria).
    Read what it wrote — requirements gathering didn't disappear, it moved
    to review.
-2. The agent calls **JFrog MCP** (the project rule picks the tools), then
+2. The agent calls **JFrog MCP** (`artifactory_packages_get_versions` for
+   Maven `org.apache.commons:commons-csv`). You should see **1.14.1** in
+   the version list (it is already stored in this Artifactory). It then
    fills `chosenPackage` / `chosenVersion` — for this hour
    `org.apache.commons:commons-csv` and `1.14.1` unless you redirect.
 3. **Your checkpoint:** read the story, the criteria, *and* the chosen

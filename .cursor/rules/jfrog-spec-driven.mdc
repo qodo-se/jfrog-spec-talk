@@ -13,14 +13,7 @@ Before recommending or adding a Maven dependency, call JFrog MCP tools that this
 2. If versions exist, optionally `artifactory_packages_get_version_repositories` and `artifactory_packages_get_install_instructions`.
 3. `xray_artifact_get_summary` only when an Artifactory path already exists (path or checksum). Skip it when the library is not in this JPD yet.
 
-Zero Artifactory versions for a brand-new OSS jar is expected — that tool lists packages **already stored** in this Artifactory, not Maven Central. Do not invent Catalog or Curation tool names if they are missing from the server.
-
-For this talk, if Artifactory has no versions, still pin:
-
-```json
-"chosenPackage": "org.apache.commons:commons-csv",
-"chosenVersion": "1.14.1"
-```
+That versions tool lists packages **already stored in this Artifactory**, not Maven Central. This talk JPD is pre-warmed with `org.apache.commons:commons-csv` `1.14.1` — expect that version in the list and pin it. If the list is empty, still pin `1.14.1` and tell the presenter the Artifactory cache is cold. Do not invent MCP tool names that are not on the server.
 
 Record those coordinates on the requirement as `chosenPackage` (`groupId:artifactId`) and `chosenVersion` when pinned.
 
