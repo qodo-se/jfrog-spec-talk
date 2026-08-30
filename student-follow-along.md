@@ -7,12 +7,12 @@ what you should see at every step.
 **The big idea:** the Contacts API in this repo is *finished
 infrastructure* — you use it, you don't rebuild CRUD. Your hour is
 spec-driven design with JFrog MCP in the loop: draft a requirement *with*
-an agent, use JFrog MCP before any new Maven library hits the POM, then
+your coding agent, use JFrog MCP before any new Maven library hits the POM, then
 drive it spec → Gherkin → RED → GREEN.
 
 JFrog SaaS MCP is OAuth-only. Do not put API keys or identity tokens in
 `mcp.json`. Those belong to Artifactory REST and the JFrog CLI, not this
-Cursor server.
+MCP server.
 
 ---
 
@@ -21,7 +21,8 @@ Cursor server.
 You need:
 
 - **Java 21+** (`java -version`)
-- **Cursor** (or any MCP-capable agent — Claude Desktop works with the same URL)
+- **A coding agent that can host MCP** (Cursor, Claude Desktop, and others
+  work with the same JFrog URL)
 - This repo cloned
 
 The Maven Wrapper is in the repo (`./mvnw`) — you do not need a global Maven
@@ -81,28 +82,29 @@ This repo already registers the server in [`.cursor/mcp.json`](.cursor/mcp.json)
 }
 ```
 
-Open Cursor's **Settings → MCP** and confirm `jfrog` shows **green**. The
-first time, Cursor opens a browser for OAuth against the trial JPD — finish
-that login. If it's red: toggle the server off/on in the settings after
-OAuth completes.
+Open your coding agent's MCP settings and confirm `jfrog` shows **green**.
+In Cursor that is **Settings → MCP**. The first time, the host opens a
+browser for OAuth against the trial JPD — finish that login. If it's red:
+toggle the server off/on in the settings after OAuth completes.
 
 ### Callout — configure with the JFrog CLI instead
 
 If you already use the JFrog CLI and prefer it to write the MCP entry for
-you (same URL, still OAuth in the agent afterward):
+you (same URL, still OAuth in your coding agent afterward):
 
 ```bash
 jf mcp install --agent cursor --mcp-url=https://trialiqsxt4.jfrog.io/mcp
 ```
 
-Then approve `jfrog` in **Settings → MCP** and complete OAuth. The CLI
-stores no credentials — only the endpoint.
+Then approve `jfrog` in your coding agent's MCP settings and complete
+OAuth. The CLI stores no credentials — only the endpoint. The `--agent
+cursor` flag is the Cursor example; use the CLI's agent name for yours.
 
 ---
 
 ## Step 3 — Exercise 1: draft the spec and pick a library (minutes 15–35)
 
-Paste this into Cursor's agent, word for word:
+Paste this into your coding agent, word for word:
 
 > Draft requirement REQ-002 in requirements/requirements.json: export
 > contacts as CSV. Follow the existing format — unique id, title, user
@@ -116,25 +118,26 @@ Paste this into Cursor's agent, word for word:
 
 **What you should see, in order:**
 
-1. The agent rewrites **REQ-002** in
+1. Your coding agent rewrites **REQ-002** in
    `requirements/requirements.json` (story + Given/When/Then criteria).
    Read what it wrote — requirements gathering didn't disappear, it moved
    to review.
-2. The agent calls **JFrog MCP** (`artifactory_packages_get_versions` for
-   Maven `org.apache.commons:commons-csv`). You should see **1.14.1** in
+2. Your coding agent calls **JFrog MCP**
+   (`artifactory_packages_get_versions` for Maven
+   `org.apache.commons:commons-csv`). You should see **1.14.1** in
    the version list (it is already stored in this Artifactory). It then
    fills `chosenPackage` / `chosenVersion` — for this hour
    `org.apache.commons:commons-csv` and `1.14.1` unless you redirect.
 3. **Your checkpoint:** read the story, the criteria, *and* the chosen
    coordinates aloud. Is this the export we meant, and is this library
    one we would actually ship? You own the intent — approve it or
-   redirect the agent with one sentence.
+   redirect your coding agent with one sentence.
 
 ---
 
 ## Step 4 — Exercise 2: spec to green (minutes 35–55)
 
-Paste this into Cursor's agent, word for word:
+Paste this into your coding agent, word for word:
 
 > Using the approved REQ-002 spec: add Gherkin scenarios tagged @REQ-002
 > to src/test/resources/features/contacts.feature for its acceptance
@@ -146,17 +149,17 @@ Paste this into Cursor's agent, word for word:
 
 **What you should see, in order:**
 
-1. The agent appends `@REQ-002` scenarios to
+1. Your coding agent appends `@REQ-002` scenarios to
    `src/test/resources/features/contacts.feature` and a REQ-002 unit test
    to `ContactApiTest`.
    **Your checkpoint 1:** read the scenario. This is the spec review —
    is this the CSV export you want?
 2. `./mvnw test` → **RED** — new scenarios/tests fail because there is
    no export endpoint yet.
-3. The agent adds **only** the coordinates from `chosenPackage` to
+3. Your coding agent adds **only** the coordinates from `chosenPackage` to
    `pom.xml` and implements the simplest CSV export that passes.
 4. `./mvnw test` → **GREEN**.
-5. The agent flips REQ-002 to `"status": "implemented"` in the spec.
+5. Your coding agent flips REQ-002 to `"status": "implemented"` in the spec.
    **Your checkpoint 2:** approve the final diff. Two checkpoints, both
    yours — the scenario and the code.
 
@@ -215,11 +218,13 @@ git checkout - && git branch -D talk && git checkout -b talk
 
 - **Build red:** pair with a neighbor first; the presenter won't debug from
   stage.
-- **Cursor MCP connection red:** toggle `jfrog` off/on in Settings → MCP
-  after completing OAuth. Confirm the URL is
-  `https://trialiqsxt4.jfrog.io/mcp` with no Authorization header.
-- **Agent adds a library without calling JFrog MCP:** stop it. The
+- **MCP connection red:** toggle `jfrog` off/on in your coding agent's
+  MCP settings (Cursor: **Settings → MCP**) after completing OAuth.
+  Confirm the URL is `https://trialiqsxt4.jfrog.io/mcp` with no
+  Authorization header.
+- **Coding agent adds a library without calling JFrog MCP:** stop it. The
   project rule is: no new Maven dependency until JFrog MCP has been
   called. Re-paste Exercise 1.
-- **Agent goes sideways:** it happens. Undo its edits, clear the chat, and
-  re-paste the prompt — or follow the presenter's fallback on screen.
+- **Coding agent goes sideways:** it happens. Undo its edits, clear the
+  chat, and re-paste the prompt — or follow the presenter's fallback on
+  screen.

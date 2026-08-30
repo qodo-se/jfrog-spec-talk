@@ -6,8 +6,8 @@
 
 A hands-on talk. The Contacts CRUD API in this repo is **finished
 infrastructure — you use it, you don't rebuild it**. What you drive is
-**spec-driven development with JFrog MCP in the loop**: you and an
-AI agent draft a CSV-export requirement together, use JFrog MCP *before*
+**spec-driven development with JFrog MCP in the loop**: you and your
+coding agent draft a CSV-export requirement together, use JFrog MCP *before*
 any new library hits the POM, then turn the spec into Gherkin and JUnit
 and walk Red → Green.
 
@@ -26,7 +26,7 @@ Artifactory, Xray, Evidence, and release bundles) is in
 | **TDD** (test-driven) | one unit | failing unit test | `ContactApiTest`, JUnit 5 |
 
 JFrog MCP sits **inside spec design**, not after the code exists: no new
-dependency until the agent has called JFrog MCP.
+dependency until your coding agent has called JFrog MCP.
 
 ## What's in the box
 
@@ -43,16 +43,17 @@ dependency until the agent has called JFrog MCP.
 ## Prerequisites
 
 - Java 21+
-- Cursor (or another MCP host)
+- A coding agent that can host MCP (Cursor, Claude Desktop, or similar)
 - Optional: JFrog CLI, if you want `jf mcp install --agent cursor` instead of the committed JSON
 
 ## Setup
 
 ```bash
 git clone <this repo> && cd jfrog-spec-talk
-./mvnw -q package
 git checkout -b talk
+./mvnw -q package
 ```
 
-Approve `jfrog` in **Cursor Settings → MCP** and complete OAuth. Details in
+Approve `jfrog` in your coding agent's MCP settings (Cursor: **Settings →
+MCP**) and complete OAuth. Details in
 [`student-follow-along.md`](student-follow-along.md).

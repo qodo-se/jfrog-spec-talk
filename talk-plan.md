@@ -1,8 +1,9 @@
 # Talk Plan
 
-**Students:** follow [`student-follow-along.md`](student-follow-along.md) —
-commands, paste-ready prompts, expected output, and the self-check. This
-page is the presenter map, including what happens *after* GREEN.
+**Students:** follow [`student-follow-along.md`](student-follow-along.md).
+They paste the exercise prompts into **their coding agent** (Cursor,
+Claude Desktop, or any MCP host with the same JFrog URL). This page is
+the presenter map, including what happens *after* GREEN.
 
 ## End-to-End Flow
 
@@ -19,9 +20,13 @@ page is the presenter map, including what happens *after* GREEN.
                   ▼
             Coding Agent
                   │
-                  │ JFrog MCP
-                  ├──────────────► Artifactory versions
-                  │               (commons-csv already in this JPD)
+     ┌────────────┴────────────┐
+     │                         │
+ Skills/rules             JFrog MCP
+ (how to work)          (live tools)
+     │                         │
+     │                         ├──────► Artifactory versions
+     └────────────┬────────────┘
                   ▼
           Implementation
                   │
@@ -66,27 +71,31 @@ review, merge, Artifactory, Xray, SBOM, Evidence, and the release bundle
 are the rest of the platform story — narrative after the PR, not a live
 lab step.
 
-**Laptop / JPD prep (not a student paste):** Exercise 1 calls
-`artifactory_packages_get_versions`, which lists packages **already stored
-in this Artifactory**, not Maven Central. Warm `commons-csv` `1.14.1`
-once so the live call returns a version list:
+## MCP and skills (three slides after the overview)
 
-1. In the Platform UI, open **Artifactory → Artifacts**.
-2. Open `spectalk-maven-central-remote` and download both files (an
-   authenticated GET fills the remote cache):
-   - `org/apache/commons/commons-csv/1.14.1/commons-csv-1.14.1.pom`
-   - `org/apache/commons/commons-csv/1.14.1/commons-csv-1.14.1.jar`
-3. Copy that folder into `spectalk-libs-release-local` so a local repo
-   holds the same coordinates.
-4. If MCP still returns 0 versions, the files are in storage but Packages
-   has not indexed them. Reindex metadata (identity token from Set Me Up):
+The coding agent has **no world model** of this JPD, this spec, or these
+tests. Token sampling is non-deterministic; this development environment
+is not. MCP and skills are the grounded truth it must use instead of
+the chat.
 
-   ```bash
-   curl -X POST -H "Authorization: Bearer $TOKEN" \
-     -H "Content-Type: application/json" \
-     -d '{"paths":["spectalk-libs-release-local","spectalk-maven-central-remote"]}' \
-     "https://trialiqsxt4.jfrog.io/artifactory/api/metadata_server/reindex"
-   ```
+**One line:** MCP is what the agent can *do* against the real system;
+skills are the instructions it *must follow*. Both are deterministic;
+the model is not.
 
-5. Confirm with MCP: `artifactory_packages_get_versions` / maven /
-   `org.apache.commons:commons-csv` includes `1.14.1`.
+Deck order after About Me: three altitudes → spec loop → this hour →
+**these three** → Agenda.
+
+| Slide | Title | Say |
+| --- | --- | --- |
+| MCP | MCP: live tools into the real system | Model Context Protocol — the coding agent calls real tools. This hour JFrog MCP lists versions **already in this Artifactory**, not Maven Central in the model's head. OAuth only; never API keys in `mcp.json`. |
+| Skills | Skills: grounded instructions | A skill is a versioned playbook (`SKILL.md`) — same job as project rules: how we work in *this* repo. Spec first, JFrog before the POM, then `./mvnw test`. Skills do not replace MCP; they say when and how to use it. Point at [`.cursor/rules/jfrog-spec-driven.mdc`](.cursor/rules/jfrog-spec-driven.mdc). |
+| Why | Deterministic truth vs a model with no world | MCP = facts and actions from the system. Skills = instructions you wrote. Together they pin spec → library → RED → GREEN. |
+
+Use the **native Google Slides** copy
+([Talks deck](https://docs.google.com/presentation/d/1CS07df5yBu8JsDjcdDVisg85_lwbTTsEPlLXtgyjjRI/edit)),
+not the yellow-badge `.pptx`. **Extensions → Apps Script**, replace the
+file with [`scripts/add-mcp-skills-slides.js`](scripts/add-mcp-skills-slides.js),
+**Run** `dumpSlideTitles` (View → Logs — you should see the three overview
+titles), then **Run** `addMcpSkillsSlides`. It duplicates the last overview
+slide (title + one body box) and writes every bullet into that body. Delete
+any extra Thank You copies left by the previous run.
