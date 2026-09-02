@@ -106,15 +106,7 @@ cursor` flag is the Cursor example; use the CLI's agent name for yours.
 
 Paste this into your coding agent, word for word:
 
-> Draft requirement REQ-002 in requirements/requirements.json: export
-> contacts as CSV. Follow the existing format — unique id, title, user
-> story, acceptance criteria phrased Given/When/Then, status pending,
-> featureFile pointing at src/test/resources/features/contacts.feature.
-> Before choosing a Maven library, use JFrog MCP. Record the chosen
-> coordinates as chosenPackage (groupId:artifactId) and chosenVersion if
-> you pin one. For this hour use org.apache.commons:commons-csv and pin
-> 1.14.1 unless I redirect you. Do not write scenarios or production
-> code yet — we are only agreeing on the spec and the library.
+> Draft REQ-002 in requirements/requirements.json for exporting contacts as CSV. Match REQ-001's format (story, Given/When/Then criteria, status pending). Use JFrog MCP to pick the Maven dependency and set `chosenPackage` and `chosenVersion` from the version it lists — do not invent a version. Spec and dependency only: no Gherkin, tests, or production code.
 
 **What you should see, in order:**
 
