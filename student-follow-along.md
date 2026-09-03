@@ -24,11 +24,11 @@ You need:
 - **A coding agent that can host MCP** (Cursor, Claude Desktop, and others
   work with the same JFrog URL)
 - This repo cloned
-- **Optional — Qodo, for the review phase at the end of Step 4.** Install
+- **Qodo, for the review phase at the end of Step 4.** Install
   the skill and log the CLI in:
 
   ```bash
-  npx skills add qodo-ai/qodo-skills/skills/qodo-review
+  curl -fsSL https://get.qodo.ai | sh
   qodo login
   ```
 
