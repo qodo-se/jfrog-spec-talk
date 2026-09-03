@@ -66,10 +66,12 @@ the presenter map, including what happens *after* GREEN.
               Production
 ```
 
-The hour on stage stops at GREEN (Exercise 2 in the follow-along). Qodo
-review, merge, Artifactory, Xray, SBOM, Evidence, and the release bundle
-are the rest of the platform story — narrative after the PR, not a live
-lab step.
+The hour on stage stops one phase past GREEN: Exercise 2 ends with a Qodo
+**pre-PR review of the local diff** (the `qodo-review` skill), so the room
+sees spec-compliance review as part of the loop rather than something that
+happens later. Students who skipped the Qodo setup get a one-line "review
+skipped" and are still done. The PR, merge, Artifactory, Xray, SBOM,
+Evidence, and the release bundle stay narrative — not live lab steps.
 
 ## MCP and skills (three slides after the overview)
 

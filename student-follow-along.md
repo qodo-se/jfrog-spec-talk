@@ -24,6 +24,16 @@ You need:
 - **A coding agent that can host MCP** (Cursor, Claude Desktop, and others
   work with the same JFrog URL)
 - This repo cloned
+- **Optional — Qodo, for the review phase at the end of Step 4.** Install
+  the skill and log the CLI in:
+
+  ```bash
+  npx skills add qodo-ai/qodo-skills/skills/qodo-review
+  qodo login
+  ```
+
+  Without it, Step 4 still runs spec → RED → GREEN; your agent will just
+  report the review as skipped.
 
 The Maven Wrapper is in the repo (`./mvnw`) — you do not need a global Maven
 install. Build once at home so the room's Wi-Fi never matters:
@@ -137,7 +147,10 @@ Paste this into your coding agent, word for word:
 > ContactApiTest, run ./mvnw test to show RED, then add only the
 > dependency recorded as chosenPackage to pom.xml and implement
 > the simplest code to reach GREEN, then mark REQ-002 implemented in
-> requirements/requirements.json. Ask me before each phase change.
+> requirements/requirements.json, then run the qodo-review skill on the
+> local diff with REQ-002's story and acceptance criteria as the session
+> context and show me the findings before you change any code. Ask me
+> before each phase change.
 
 **What you should see, in order:**
 
@@ -152,8 +165,23 @@ Paste this into your coding agent, word for word:
    `pom.xml` and implements the simplest CSV export that passes.
 4. `./mvnw test` → **GREEN**.
 5. Your coding agent flips REQ-002 to `"status": "implemented"` in the spec.
-   **Your checkpoint 2:** approve the final diff. Two checkpoints, both
-   yours — the scenario and the code.
+   **Your checkpoint 2:** approve the diff.
+6. Your coding agent runs the **`qodo-review`** skill — `qodo review` over
+   your uncommitted diff, carrying REQ-002's story and criteria as
+   context, so the review judges the code against the spec you approved
+   and not against a guess. Expect a minute or two of progress lines,
+   then findings tagged `[category/level]`. Nothing is committed, pushed,
+   or turned into a PR.
+   **Your checkpoint 3:** you decide which findings to apply — your agent
+   must ask before it edits. Three checkpoints, all yours: the scenario,
+   the code, and the review.
+
+If you skipped the optional Qodo setup in **Before the talk**, your agent
+should say the review was skipped in one line and stop — that is the
+correct behavior, not a failure. Steps 1–5 of this list still count as a
+complete run. `qodo review` diffs your `talk` branch against
+`origin/main`, which is already pushed in the clone, so there is nothing
+to push first.
 
 ---
 
@@ -180,10 +208,12 @@ Any FAIL line tells you exactly which artifact to revisit.
 
 ## After the PR (presenter narrative, not a live exercise)
 
-The [talk plan](talk-plan.md) continues past GREEN: a PR, Qodo review
-against the spec and standards, merge, then build into JFrog Artifactory
-with Xray, SBOM, Evidence, and a release bundle. That is the rest of the
-platform story — you do not need to run it in this hour.
+Step 4 ends with the *pre-PR* review of your local diff. The
+[talk plan](talk-plan.md) continues past that: a PR, the same Qodo review
+against the spec and standards on every pushed commit, merge, then build
+into JFrog Artifactory with Xray, SBOM, Evidence, and a release bundle.
+That is the rest of the platform story — you do not need to run it in
+this hour.
 
 ---
 

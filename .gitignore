@@ -31,5 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Qodo (session context for the review phase - never committed) ###
+.qodo/
 /.env
 .DS_Store

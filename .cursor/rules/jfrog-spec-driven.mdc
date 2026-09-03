@@ -18,3 +18,13 @@ That versions tool lists packages **already stored in this Artifactory**, not Ma
 Record those coordinates on the requirement as `chosenPackage` (`groupId:artifactId`) and `chosenVersion` when pinned.
 
 Then `./mvnw test` — not a copied TDD MCP server. The JFrog MCP URL is OAuth-only; never put API keys or identity tokens in `mcp.json`.
+
+# Code review is the last phase, not GREEN
+
+Once `./mvnw test` is green and the requirement is flipped to `implemented`, the loop has one phase left: a code review of the local diff. Run the **`qodo-review` skill** — read `~/.agents/skills/qodo-review/SKILL.md` (or `~/.claude/skills/qodo-review/SKILL.md`) and follow it. It reviews uncommitted work; nothing is committed, pushed, or opened as a PR.
+
+Attach the context the reviewer cannot infer: the requirement id and story, the acceptance criteria the scenarios came from, and why `chosenPackage` / `chosenVersion` was pinned from what JFrog MCP listed. Put it in `.qodo/session-context.json` so every run carries it, and keep `.qodo/` out of git.
+
+Report the findings and stop there. Do not apply a fix until the human picks which findings to take — the review is their checkpoint, the same way the spec and the scenario were.
+
+If the skill is not installed, `~/.qodo/bin/qodo` is missing, or the CLI is not logged in, say so in one line and treat the review as skipped. Never narrate your own reading of the diff as if Qodo had run it.
